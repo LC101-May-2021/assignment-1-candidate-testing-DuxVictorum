@@ -16,6 +16,7 @@ let correctAnswers = [
 	"3"
 ];
 let candidateAnswers = [];
+let candidateCorrect = 0;
 
 // TODO 1.1a: Define candidateName // 
 let candidateName = "";
@@ -44,27 +45,31 @@ function askQuestion() {
 
 // TODO 1.2c: Let the candidate know if they have answered the question correctly or incorrectly // 
 function gradeQuiz(candidateAnswers) {
-	console.log("Candidate name:", candidateName);
+	console.log("\nRESULTS: \nCandidate name:", candidateName);
 	for (let i = 0; i < candidateAnswers.length; i++) {
-		console.log(`${String(i + 1)}): ${questions[i]}
+		if (candidateAnswers[i] === correctAnswers[i].toLowerCase()) {
+			candidateCorrect += 1;
+		}
+		console.log(`\n${String(i + 1)}): ${questions[i]}
 	Your answer: ${candidateAnswers[i]}
 	Correct answer: ${correctAnswers[i]}`);
-	
-		// let correctLower = correctAnswers[i].toLowerCase();
-		// if (candidateAnswers[i] === correctLower[i]) {
-		// 	console.log("Correct!");
-		// } else {
-		// 	console.log("Sorry, incorrect.");
-		// }
 	}
 	
-	
-
-  	let grade;
-  
-
+  	let grade = candidateCorrect / (candidateAnswers.length) * 100;
   	return grade;
 }
+
+function checkPass(percent) {
+	let passed = "";
+	if (percent >= 80) {
+		passed = "PASSED";
+	} else {
+		passed = "FAILED";
+	}
+	console.log(`\n>>> Overall Grade: ${percent}% (${String(candidateCorrect)} of 5 responses correct) <<<
+>>> Status: ${passed} <<<`);
+}
+
 
 function runProgram() {
   askForName();
@@ -72,7 +77,9 @@ function runProgram() {
   console.log(`\nWelcome, ${candidateName}, let's get started.`)
 
   askQuestion();
-  gradeQuiz(this.candidateAnswers);
+  let score = gradeQuiz(this.candidateAnswers);
+  checkPass(score);
+
 }
 
 // Don't write any code below this line //
